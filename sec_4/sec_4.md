@@ -243,25 +243,109 @@ Traceback (most recent call last):
 >>> parrot()
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-  TypeError: parrot() takes at least 1 argument (0 given)
-  >>> parrot(voltage=5.0, 'dead')
-    File "<stdin>", line 1
-    SyntaxError: non-keyword arg after keyword arg
-    >>> parrot(110, voltage=220)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-      TypeError: parrot() got multiple values for keyword argument 'voltage'
-      >>> parrot(actor='John Cleese')
-      Traceback (most recent call last):
-        File "<stdin>", line 1, in <module>
-        TypeError: parrot() got an unexpected keyword argument 'actor'
-        >>>
-        >>>
-        >>> def function(a):
-        ...     pass
-        ...
-        >>> function(0, a=0)
-        Traceback (most recent call last):
-          File "<stdin>", line 1, in <module>
-          TypeError: function() got multiple values for keyword argument 'a'
+TypeError: parrot() takes at least 1 argument (0 given)
+>>> parrot(voltage=5.0, 'dead')
+  File "<stdin>", line 1
+SyntaxError: non-keyword arg after keyword arg
+>>> parrot(110, voltage=220)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: parrot() got multiple values for keyword argument 'voltage'
+>>> parrot(actor='John Cleese')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: parrot() got an unexpected keyword argument 'actor'
+>>>
+>>>
+>>> def function(a):
+...     pass
+...
+>>> function(0, a=0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: function() got multiple values for keyword argument 'a'
+>>>
+>>>
+>>> def cheeseshop(kind, *arguments, **keywords):
+...     print "-- Do you have any", kind, "?"
+...     print "-- I'm sorry, we're all out of", kind
+...     for arg in arguments:
+...         print arg
+...     print "-" * 40
+...     keys = sorted(keywords.keys())
+...     for kw in keys:
+...         print kw, ":", keywords[kw]
+...
+>>> cheeseshop("Limburger", "It's very runny, sir.",
+...            "It's really very, VERY runny, sir.",
+...            shopkeeper='Michael Palin',
+...            client="John Cleese",
+...            sketch="Cheese Shop Sketch")
+-- Do you have any Limburger ?
+-- I'm sorry, we're all out of Limburger
+It's very runny, sir.
+It's really very, VERY runny, sir.
+----------------------------------------
+client : John Cleese
+shopkeeper : Michael Palin
+sketch : Cheese Shop Sketch
+
+>>> def write_multiple_items(file, separator, *args):
+...     file.write(separator.join(args))
+...
+```
+
+## 引数リストのアンパック
+
+```py
+>>> range(3, 6)
+[3, 4, 5]
+>>> args = [3, 6]
+>>> range(*args)
+[3, 4, 5]
+>>>
+>>>
+>>> def parrot(voltage, state='a stiff', action='voom'):
+...     print "-- This parrot wouldn't", action,
+...     print "if you put", voltage, "volts through it.",
+...     print "E's", state, "!"
+...
+>>> d = {"voltage": "four million", "state": "bleedin' demised", "action": "VOOM"}
+>>> parrot(**d)
+-- This parrot wouldn't VOOM if you put four million volts through it. E's bleedin' demised !
+```
+
+## ラムダ式
+
+```py
+>>> def make_incrementor(n):
+...     return lambda x: x + n
+...
+>>> f = make_incrementor(42)
+>>> f(0)
+42
+>>> f(1)
+43
+>>>
+>>>
+>>> pairs = [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four')]
+>>> pairs.sort(key=lambda pair: pair[1])
+>>> pairs
+[(4, 'four'), (1, 'one'), (3, 'three'), (2, 'two')]
+```
+
+## ドキュメンテーション文字列
+
+```py
+>>> def my_function():
+...     """Do nothing, but document it.
+...
+...     No, really, it doesn't do anything.
+...     """
+...     pass
+...
+>>> print my_function.__doc__
+Do nothing, but document it.
+
+	No, really, it doesn't do anything.
 ```
